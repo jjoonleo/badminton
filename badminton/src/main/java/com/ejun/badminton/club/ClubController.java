@@ -5,14 +5,11 @@ import com.ejun.badminton.userclub.UserClubService;
 import com.ejun.badminton.utils.RestResponse;
 import com.ejun.badminton.utils.SuccessCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/clubs")
@@ -53,14 +50,5 @@ public class ClubController {
         GetClubResponse club = GetClubResponse.fromClub(clubService.getClubById(clubId));
         return ResponseEntity.status(SuccessCode.CLUB_LOADED.getStatus())
                 .body(RestResponse.fromSuccessCode(SuccessCode.CLUB_LOADED, club));
-    }
-
-    @GetMapping("/{clubId}/members")
-    public ResponseEntity<Set<User>> getClubMembers(@PathVariable Long clubId) {
-        try {
-            return ResponseEntity.ok(new HashSet<>(userClubService.getClubMembers(clubId)));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
     }
 }
