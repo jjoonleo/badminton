@@ -5,21 +5,16 @@ import com.ejun.badminton.club.ClubRepository;
 import com.ejun.badminton.user.User;
 import com.ejun.badminton.user.UserRepository;
 import com.ejun.badminton.utils.Exceptions.ClubNotFoundException;
-import com.ejun.badminton.utils.Exceptions.UserNotFoundException;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserClubService {
     private final ClubRepository clubRepository;
-    private final UserRepository userRepository;
     private final UserClubRepository userClubRepository;
 
     public void joinClub(Long clubId, User user){

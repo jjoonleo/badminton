@@ -12,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -47,7 +46,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String dateOfBirth;
 
-    @Column(nullable = true)
     private String dateOfWithdrawal;
 
     @Enumerated(EnumType.STRING)
