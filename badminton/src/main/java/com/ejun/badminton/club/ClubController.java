@@ -2,6 +2,8 @@ package com.ejun.badminton.club;
 
 import com.ejun.badminton.user.User;
 import com.ejun.badminton.userclub.UserClubService;
+import com.ejun.badminton.utils.RestResponse;
+import com.ejun.badminton.utils.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,8 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("/api/v1/clubs")
@@ -23,24 +25,34 @@ public class ClubController {
 
     @PostMapping("/{clubId}/join")
     public ResponseEntity<String> joinClub(@PathVariable Long clubId, @AuthenticationPrincipal User user) {
-        userClubService.joinClub( clubId, user);
-        return ResponseEntity.ok("User joined the club successfully");
+        userClubService.joinClub(clubId, user);
+        return ResponseEntity.
+                status(SuccessCode.JOINED.getStatus()).
+                body(RestResponse.fromSuccessCode(SuccessCode.JOINED, null).getMessage());
     }
 
     @PostMapping()
-    public ResponseEntity<CreateClubResponse> createClub(@RequestBody Club club, @AuthenticationPrincipal User user) {
-        return ResponseEntity.ok(CreateClubResponse.from(clubService.createClub(club, user)));
+    public ResponseEntity<RestResponse<CreateClubResponse>> createClub(@RequestBody Club club, @AuthenticationPrincipal User user) {
+        CreateClubResponse createClubResponse = CreateClubResponse.from(clubService.createClub(club, user));
+        return ResponseEntity
+                .status(SuccessCode.CLUB_CREATED.getStatus())
+                .body(RestResponse.fromSuccessCode(SuccessCode.CLUB_CREATED,createClubResponse));
     }
 
     @GetMapping()
-    public ResponseEntity<Iterable<ClubRepository.ClubWithoutUserClub>> getClubs(@AuthenticationPrincipal User user) {
-        Logger.getLogger("User").info(user.getId().toString());
-        return ResponseEntity.ok(clubRepository.findClubsByUserId(user.getId()));
+    public ResponseEntity<RestResponse<Iterable<GetClubResponse>>> getClubs(@AuthenticationPrincipal User user) {
+        List<GetClubResponse> clubs = clubRepository.findClubsByUserId(user.getId()).stream().map(GetClubResponse::fromClubWithoutUserClub).toList();
+        return ResponseEntity
+                .status(SuccessCode.CLUB_LOADED.getStatus())
+                .body(RestResponse.fromSuccessCode(SuccessCode.CLUB_LOADED, clubs)
+        );
     }
 
     @GetMapping("/{clubId}")
-    public ResponseEntity<Club> getClub(@PathVariable Long clubId) {
-        return ResponseEntity.ok(clubService.getClubById(clubId));
+    public ResponseEntity<RestResponse<GetClubResponse>> getClub(@PathVariable Long clubId) {
+        GetClubResponse club = GetClubResponse.fromClub(clubService.getClubById(clubId));
+        return ResponseEntity.status(SuccessCode.CLUB_LOADED.getStatus())
+                .body(RestResponse.fromSuccessCode(SuccessCode.CLUB_LOADED, club));
     }
 
     @GetMapping("/{clubId}/members")
