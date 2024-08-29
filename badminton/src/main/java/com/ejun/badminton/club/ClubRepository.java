@@ -16,6 +16,6 @@ public interface ClubRepository extends JpaRepository<Club, Long> {
         String getDescription();
     }
 
-    @Query(value = "SELECT c.club_id, c.name, c.description From user_club uc LEFT JOIN club c ON uc.club_id = c.club_id WHERE uc.user_id = :userId", nativeQuery = true)
+    @Query(value = "SELECT c.club_id AS id, c.name, c.description From user_club uc LEFT JOIN club c ON uc.club_id = c.club_id WHERE uc.user_id = :userId", nativeQuery = true)
     List<ClubWithoutUserClub> findClubsByUserId(@Param("userId") Long userId);
 }
