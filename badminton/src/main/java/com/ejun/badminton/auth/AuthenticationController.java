@@ -1,5 +1,7 @@
 package com.ejun.badminton.auth;
 
+import com.ejun.badminton.utils.RestResponse;
+import com.ejun.badminton.utils.SuccessCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,16 +21,20 @@ public class AuthenticationController {
     private final AuthenticationService service;
 
     @PostMapping("/sign-up")
-    public ResponseEntity<AuthenticationResponse> signUp(
-           @RequestBody RegisterRequest request
+    public ResponseEntity<RestResponse<AuthenticationResponse>> signUp(
+            @RequestBody RegisterRequest request
     ) {
-        return ResponseEntity.ok(service.SignUp(request));
+        return ResponseEntity
+                .status(SuccessCode.SIGN_UP.getStatus())
+                .body(RestResponse.fromSuccessCode(SuccessCode.SIGN_UP, service.SignUp(request)));
     }
+
     @PostMapping("/sign-in")
-    public ResponseEntity<AuthenticationResponse> signIn(
+    public ResponseEntity<RestResponse<AuthenticationResponse>> signIn(
             @RequestBody AuthenticationRequest request
     ) {
-        return ResponseEntity.ok(service.signIn(request));
+        return ResponseEntity.status(SuccessCode.SIGN_IN.getStatus())
+                .body(RestResponse.fromSuccessCode(SuccessCode.SIGN_IN, service.signIn(request)));
     }
 
     @PostMapping("/refresh-token")

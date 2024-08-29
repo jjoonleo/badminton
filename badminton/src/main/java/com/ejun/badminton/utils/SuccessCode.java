@@ -18,7 +18,9 @@ public enum SuccessCode {
     LEFT_CLUB(200, "S008", "Successfully Left Club"),
     CLUB_DELETED(200, "S009", "Successfully Deleted Club"),
     CLUB_UPDATED(200, "S010", "Successfully Updated Club"),
-    CLUB_LOADED(200, "S011", "Successfully Loaded Club");
+    CLUB_LOADED(200, "S011", "Successfully Loaded Club"),
+    SIGN_UP(201, "S012", "Successfully Signed Up"),
+    SIGN_IN(200, "S013", "Successfully Signed In"),;
 
 
     private final int status;
