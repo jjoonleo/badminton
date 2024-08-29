@@ -29,7 +29,7 @@ public class ClubController {
     }
 
     @PostMapping()
-    public ResponseEntity<RestResponse<CreateClubResponse>> createClub(@RequestBody Club club, @AuthenticationPrincipal User user) {
+    public ResponseEntity<RestResponse<CreateClubResponse>> createClub(@RequestBody CreateClubRequest club, @AuthenticationPrincipal User user) {
         CreateClubResponse createClubResponse = CreateClubResponse.from(clubService.createClub(club, user));
         return ResponseEntity
                 .status(SuccessCode.CLUB_CREATED.getStatus())

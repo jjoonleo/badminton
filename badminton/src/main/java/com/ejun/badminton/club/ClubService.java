@@ -1,5 +1,6 @@
 package com.ejun.badminton.club;
 
+import com.ejun.badminton.memberLevel.MemberLevelService;
 import com.ejun.badminton.user.User;
 import com.ejun.badminton.userclub.UserClubService;
 import com.ejun.badminton.utils.Exceptions.ClubNotFoundException;
@@ -14,9 +15,14 @@ import java.util.Optional;
 public class ClubService {
     private final ClubRepository clubRepository;
     private final UserClubService userClubService;
+    private final MemberLevelService memberLevelService;
 
-    public Club createClub(Club club, User user) {
-        Club createdClub = clubRepository.save(club);
+    public Club createClub(CreateClubRequest club, User user) {
+        if(club.getMemberLevels() == null || club.getMemberLevels().isEmpty()) {
+            throw new IllegalArgumentException("Member levels must be provided");
+        }
+        Club createdClub = clubRepository.save(club.toEntity());
+        club.getMemberLevels().forEach(memberLevel ->  memberLevelService.createMemberLevelFromClubMemberLevel(memberLevel, createdClub));
         userClubService.joinClub(createdClub.getId(), user);
         return createdClub;
     }

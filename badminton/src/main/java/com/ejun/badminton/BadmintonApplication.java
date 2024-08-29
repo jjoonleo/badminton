@@ -8,6 +8,7 @@ public class BadmintonApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BadmintonApplication.class, args);
+
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.ejun.badminton.userclub;
 
 import com.ejun.badminton.club.Club;
+import com.ejun.badminton.memberLevel.MemberLevel;
 import com.ejun.badminton.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
@@ -34,6 +35,10 @@ public class UserClub {
     @MapsId("clubId")
     @JoinColumn(name = "club_id")
     private Club club;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_level_id", nullable = false)
+    private MemberLevel memberLevel;
 
     @Embeddable
     @Data

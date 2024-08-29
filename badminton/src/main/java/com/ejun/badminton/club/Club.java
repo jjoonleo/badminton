@@ -1,5 +1,6 @@
 package com.ejun.badminton.club;
 
+import com.ejun.badminton.memberLevel.MemberLevel;
 import com.ejun.badminton.userclub.UserClub;
 import jakarta.persistence.*;
 import lombok.*;
@@ -25,4 +26,7 @@ public class Club {
 
     @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserClub> userClubs;
+
+    @OneToMany(mappedBy = "club", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<MemberLevel> memberLevels;
 }
