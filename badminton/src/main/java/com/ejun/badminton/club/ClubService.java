@@ -23,7 +23,6 @@ public class ClubService {
         }
         Club createdClub = clubRepository.save(club.toEntity());
         club.getMemberLevels().forEach(memberLevel ->  memberLevelService.createMemberLevelFromClubMemberLevel(memberLevel, createdClub));
-        userClubService.joinClub(createdClub.getId(), user);
         return createdClub;
     }
 
