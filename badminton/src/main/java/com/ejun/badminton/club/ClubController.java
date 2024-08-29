@@ -20,14 +20,6 @@ public class ClubController {
     private final ClubRepository clubRepository;
     private final ClubService clubService;
 
-    @PostMapping("/{clubId}/join")
-    public ResponseEntity<String> joinClub(@PathVariable Long clubId, @AuthenticationPrincipal User user) {
-        userClubService.joinClub(clubId, user);
-        return ResponseEntity.
-                status(SuccessCode.JOINED.getStatus()).
-                body(RestResponse.fromSuccessCode(SuccessCode.JOINED, null).getMessage());
-    }
-
     @PostMapping()
     public ResponseEntity<RestResponse<CreateClubResponse>> createClub(@RequestBody CreateClubRequest club, @AuthenticationPrincipal User user) {
         CreateClubResponse createClubResponse = CreateClubResponse.from(clubService.createClub(club, user));
